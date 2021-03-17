@@ -17,8 +17,16 @@
       ]
     },
     {
+      "selector": "#waifu-tool .fa-service",
+      "text": ["猜猜我要说些什么？", "这里是客服哦！"]
+    },
+    {
       "selector": "#waifu-tool .fa-comment",
-      "text": ["猜猜我要说些什么？", "我从青蛙王子那里听到了不少人生经验。"]
+      "text": ["我有话要对你说哦！", "我从青蛙王子那里听到了不少人生经验。"]
+    },
+    {
+      "selector": "#waifu-tool .fa-study-hall",
+      "text": ["去更有意思的代码世界体验吧"]
     },
     {
       "selector": "#waifu-tool .fa-paper-plane",

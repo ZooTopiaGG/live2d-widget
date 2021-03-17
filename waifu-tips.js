@@ -25,13 +25,10 @@ function loadWidget(config) {
   		<div id="waifu-tips"></div>
   		<canvas id="live2d" width="800" height="800"></canvas>
   		<div id="waifu-tool">
-        <span class="fa fa-lg fa-comment"></span>
-        <span class="fa fa-lg fa-paper-plane"></span>
-        <span class="fa fa-lg fa-user-circle"></span>
-        <span class="fa fa-lg fa-street-view"></span>
-        <span class="fa fa-lg fa-camera-retro"></span>
-        <span class="fa fa-lg fa-info-circle"></span>
-        <span class="fa fa-lg fa-times"></span>
+        <span class="wt wt-icon fa-comment"></span>
+        <span class="wt wt-icon fa-study-hall"></span>
+        <span class="wt wt-icon fa-service"></span>
+        <span class="wt wt-icon fa-times"></span>
       </div>
   	</div>`
   );
@@ -70,41 +67,58 @@ function loadWidget(config) {
     }
   }, 1000);
 
+  function winOpen(url) {
+    let a = document.createElement("a");
+    a.setAttribute("href", url);
+    a.setAttribute("target", "_blank");
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
   (function registerEventListener() {
     document
       .querySelector("#waifu-tool .fa-comment")
       .addEventListener("click", showHitokoto);
     document
-      .querySelector("#waifu-tool .fa-paper-plane")
+      .querySelector("#waifu-tool .fa-study-hall")
       .addEventListener("click", () => {
-        if (window.Asteroids) {
-          if (!window.ASTEROIDSPLAYERS) window.ASTEROIDSPLAYERS = [];
-          window.ASTEROIDSPLAYERS.push(new Asteroids());
-        } else {
-          const script = document.createElement("script");
-          script.src =
-            "https://cdn.jsdelivr.net/gh/stevenjoezhang/asteroids/asteroids.js";
-          document.head.appendChild(script);
-        }
+        winOpen("https://vip.dingdangcode.com/learning");
       });
+    // document
+    //   .querySelector("#waifu-tool .fa-paper-plane")
+    //   .addEventListener("click", () => {
+    //     if (window.Asteroids) {
+    //       if (!window.ASTEROIDSPLAYERS) window.ASTEROIDSPLAYERS = [];
+    //       window.ASTEROIDSPLAYERS.push(new Asteroids());
+    //     } else {
+    //       const script = document.createElement("script");
+    //       script.src =
+    //         "https://cdn.jsdelivr.net/gh/stevenjoezhang/asteroids/asteroids.js";
+    //       document.head.appendChild(script);
+    //     }
+    //   });
     document
-      .querySelector("#waifu-tool .fa-user-circle")
-      .addEventListener("click", loadOtherModel);
-    document
-      .querySelector("#waifu-tool .fa-street-view")
-      .addEventListener("click", loadRandModel);
-    document
-      .querySelector("#waifu-tool .fa-camera-retro")
-      .addEventListener("click", () => {
-        showMessage("照好了嘛，是不是很可爱呢？", 6000, 9);
-        Live2D.captureName = "photo.png";
-        Live2D.captureFrame = true;
-      });
-    document
-      .querySelector("#waifu-tool .fa-info-circle")
-      .addEventListener("click", () => {
-        open("https://github.com/stevenjoezhang/live2d-widget");
-      });
+      .querySelector("#waifu-tool .fa-service")
+      .addEventListener("click", loadMeiQiaService);
+    // document
+    //   .querySelector("#waifu-tool .fa-user-circle")
+    //   .addEventListener("click", loadOtherModel);
+    // document
+    //   .querySelector("#waifu-tool .fa-street-view")
+    //   .addEventListener("click", loadRandModel);
+    // document
+    //   .querySelector("#waifu-tool .fa-camera-retro")
+    //   .addEventListener("click", () => {
+    //     showMessage("照好了嘛，是不是很可爱呢？", 6000, 9);
+    //     Live2D.captureName = "photo.png";
+    //     Live2D.captureFrame = true;
+    //   });
+    // document
+    //   .querySelector("#waifu-tool .fa-info-circle")
+    //   .addEventListener("click", () => {
+    //     open("https://github.com/stevenjoezhang/live2d-widget");
+    //   });
     document
       .querySelector("#waifu-tool .fa-times")
       .addEventListener("click", () => {
@@ -175,6 +189,7 @@ function loadWidget(config) {
   })();
 
   function showHitokoto() {
+    console.log("机器人客服");
     // 增加 hitokoto.cn 的 API
     fetch("https://v1.hitokoto.cn")
       .then((response) => response.json())
@@ -217,10 +232,13 @@ function loadWidget(config) {
       modelId = 2; // 模型 ID
       modelTexturesId = 53; // 材质 ID
     }
+    console.log(modelId, modelTexturesId);
     loadModel(modelId, modelTexturesId);
+    console.log(2222, waifuPath);
     fetch(waifuPath)
       .then((response) => response.json())
       .then((result) => {
+        console.log("mouseover---result:", result, waifuPath);
         window.addEventListener("mouseover", (event) => {
           for (let { selector, text } of result.mouseover) {
             if (!event.target.matches(selector)) continue;
@@ -313,6 +331,31 @@ function loadWidget(config) {
           loadModel(result.model.id, 0, result.model.message);
         });
     }
+  }
+
+  (function meiQiaService() {
+    /* eslint-disable */
+    (function (m, ei, q, i, a, j, s) {
+      m[i] =
+        m[i] ||
+        function () {
+          (m[i].a = m[i].a || []).push(arguments);
+        };
+      (j = ei.createElement(q)), (s = ei.getElementsByTagName(q)[0]);
+      j.async = true;
+      j.charset = "UTF-8";
+      j.src = "https://static.meiqia.com/dist/meiqia.js?_=t";
+      s.parentNode.insertBefore(j, s);
+    })(window, document, "script", "_MEIQIA");
+    _MEIQIA("entId", 132190);
+    _MEIQIA("manualInit"); /*开启手动模式*/
+    _MEIQIA("withoutBtn"); /*无按钮*/
+    _MEIQIA("init"); /*初始化*/
+  })();
+
+  // 美洽客服
+  async function loadMeiQiaService() {
+    _MEIQIA("showPanel");
   }
 }
 
