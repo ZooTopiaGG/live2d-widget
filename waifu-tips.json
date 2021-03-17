@@ -1,6 +1,10 @@
 {
   "mouseover": [
     {
+      "selector": "#App .site-login",
+      "text": ["欢迎来到叮当码校园，快登录进去看看吧！"]
+    },
+    {
       "selector": "#waifu #live2d",
       "text": [
         "干嘛呢你，快把手拿开～～",

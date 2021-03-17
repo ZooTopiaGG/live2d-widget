@@ -10,16 +10,16 @@
   padding: 5px 2px 5px 5px;
   position: fixed;
   transition: margin-right 1s;
-  width: 66px;
+  width: 60px;
   writing-mode: vertical-lr;
 }
 
 #waifu-toggle.waifu-toggle-active {
-  margin-right: -50px;
+  margin-right: -34px;
 }
 
 #waifu-toggle.waifu-toggle-active:hover {
-  margin-right: -30px;
+  margin-right: -24px;
 }
 
 #waifu {
@@ -104,6 +104,10 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+#waifu-tool span + span {
+  margin-top: 10px;
 }
 #waifu-tool .fa-comment {
   background-image: url("assets/icon_chat_normal@2x.png");
