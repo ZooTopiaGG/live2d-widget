@@ -5,6 +5,14 @@
       "text": ["欢迎来到叮当码校园，快登录进去看看吧！"]
     },
     {
+      "selector": "#normal_login_username",
+      "text": ["输入你的手机号/邮箱或者账号哦~"]
+    },
+    {
+      "selector": ".site-apply-acount",
+      "text": ["点击前往申请账号，体验更多玩法哦~"]
+    },
+    {
       "selector": "#waifu #live2d",
       "text": [
         "干嘛呢你，快把手拿开～～",
