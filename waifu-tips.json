@@ -13,6 +13,36 @@
       "text": ["点击前往申请账号，体验更多玩法哦~"]
     },
     {
+      "selector": ".ddm-feedback",
+      "text": [
+        "请您对我们提出宝贵意见和建议，您留下的每个意见都是我们产品不断改进的动力！~"
+      ]
+    },
+    {
+      "selector": ".ddm-guidance",
+      "text": ["这里是快速开课，你可以去创建班级，发布课程等等~"]
+    },
+    {
+      "selector": ".ddm-app",
+      "text": ["点击快去看看里面都有什么吧~"]
+    },
+    {
+      "selector": ".ddm-works",
+      "text": ["这里是作品推荐，点击更多可以去查看其他优秀作品哦~"]
+    },
+    {
+      "selector": ".app-primary-color-hover",
+      "text": ["点击前往知识库，学习更多知识吧~"]
+    },
+    {
+      "selector": ".app-primary-blue-hover",
+      "text": ["点击查看更多丰富的课程资源，快速提升自己~"]
+    },
+    {
+      "selector": ".app-primary-yellow-hover",
+      "text": ["点击这里可以直接去发布作业哦~"]
+    },
+    {
       "selector": "#waifu #live2d",
       "text": [
         "干嘛呢你，快把手拿开～～",
