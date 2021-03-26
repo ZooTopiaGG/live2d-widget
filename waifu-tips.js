@@ -346,7 +346,7 @@ function loadWidget(config) {
       j.src = "https://static.meiqia.com/dist/meiqia.js?_=t";
       s.parentNode.insertBefore(j, s);
     })(window, document, "script", "_MEIQIA");
-    _MEIQIA("entId", "b6c13caf54f748e8a36352cccd1b8eb6");
+    _MEIQIA("entId", "0936bc855fb73d043266e23bcb88ee4b");
     _MEIQIA("manualInit"); /*开启手动模式*/
     _MEIQIA("withoutBtn"); /*无按钮*/
     _MEIQIA("init"); /*初始化*/
