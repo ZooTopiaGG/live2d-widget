@@ -30,7 +30,7 @@ function request(url, config) {
     _headers.push(signToken, timestamp, nonce);
     let shaStr = sha1(_headers.sort().join(""));
     // 接口签名校验
-    let token = window.localStorage.getItem("token") || "";
+    let token = window.sessionStorage.getItem("EDU_TOKEN") || "";
     let header = {
       headers: {
         timestamp,
