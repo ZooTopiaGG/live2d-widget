@@ -1,7 +1,7 @@
 // 注意：live2d_path 参数应使用绝对路径
-const live2d_path =
-  "https://cdn.jsdelivr.net/gh/ZootopiaGG/live2d-widget@latest/";
-// const live2d_path = "../";
+// const live2d_path =
+//   "https://cdn.jsdelivr.net/gh/ZootopiaGG/live2d-widget@latest/";
+const live2d_path = "../";
 
 // 封装异步加载资源的方法
 function loadExternalResource(url, type) {
@@ -29,8 +29,11 @@ if (screen.width >= 768) {
   Promise.all([
     loadExternalResource(live2d_path + "waifu.css", "css"),
     loadExternalResource(live2d_path + "live2d.min.js", "js"),
+    loadExternalResource(live2d_path + "sha1.js", "js"),
+    loadExternalResource(live2d_path + "fetch.js", "js"),
     loadExternalResource(live2d_path + "waifu-tips.js", "js"),
   ]).then(() => {
+    console.log(sha1, request);
     initWidget({
       waifuPath: live2d_path + "waifu-tips.json",
       //apiPath: "https://live2d.fghrsh.net/api/",

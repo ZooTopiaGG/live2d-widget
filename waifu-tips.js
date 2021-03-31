@@ -1,7 +1,92 @@
 /*
  * Live2D Widget
- * https://github.com/stevenjoezhang/live2d-widget
+ * https://github.com/zootopiagg@gmail.com/live2d-widget
  */
+var isProd = location.hostname.indexOf("edu.dingdangcode.com") > -1;
+var hosts = isProd
+  ? "https://api.dingdangcode.com/"
+  : "https://api.dingdangcode.cn/";
+
+function generateUUID() {
+  var d = new Date().getTime();
+  if (window.performance && typeof window.performance.now === "function") {
+    d += performance.now(); //use high-precision timer if available
+  }
+  var uuid = "xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    var r = (d + Math.random() * 16) % 16 | 0;
+    d = Math.floor(d / 16);
+    return (c === "x" ? r : (r & 0x3) | 0x8).toString(16);
+  });
+  return uuid;
+}
+
+function request(url, config) {
+  try {
+    // 接口签名校验
+    let _headers = [],
+      signToken = "766a6afe879b44bd9c5c7518746bd0e4",
+      timestamp = Date.now().toString(),
+      nonce = generateUUID();
+    _headers.push(signToken, timestamp, nonce);
+    let shaStr = sha1(_headers.sort().join(""));
+    // 接口签名校验
+    let token = window.localStorage.getItem("token") || "";
+    let header = {
+      headers: {
+        timestamp,
+        nonce,
+        signature: shaStr,
+        "content-type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        token,
+      },
+    };
+    return fetch(url, Object.assign(config, header))
+      .then((res) => {
+        if (!res.ok) {
+          // 服务器异常返回
+          throw Error("");
+        }
+        return res.json();
+      })
+      .then((resJson) => {
+        if (resJson.code === 36 || resJson.code === 25) {
+          // 登录凭证无效或已过期
+          // window.localStorage.removeItem('token');
+          //   location.reload();
+        }
+        return resJson;
+      })
+      .catch((error) => {
+        // 公共错误处理
+        console.log(error);
+      });
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+// POST请求
+function post(url, data) {
+  if (data && typeof data !== "string") {
+    data = JSON.stringify(data);
+  }
+  return request(`${url}?time=${Date.now()}`, {
+    body: data,
+    method: "POST",
+  });
+}
+
+// 埋点
+function buried(params) {
+  return post(hosts + "ddc-hadoop/buried/buried", {
+    batchCode: null,
+    ...params,
+    body: params.body,
+    event: params.event,
+    eventName: params.eventName,
+  });
+}
 
 function loadWidget(config) {
   let { waifuPath, apiPath, cdnPath } = config;
@@ -67,6 +152,7 @@ function loadWidget(config) {
     }
   }, 1000);
 
+  // 打开新窗口
   function winOpen(url) {
     let a = document.createElement("a");
     a.setAttribute("href", url);
@@ -77,12 +163,32 @@ function loadWidget(config) {
   }
 
   (function registerEventListener() {
+    document.querySelector("#live2d").addEventListener("click", (e) => {
+      e.stopImmediatePropagation();
+      e.stopPropagation();
+      buried({
+        body: {
+          click_from: location.href,
+          type: "mascot",
+        },
+        event: "mascotHot",
+        eventName: "吉祥物热度",
+      });
+    });
     document
       .querySelector("#waifu-tool .fa-comment")
       .addEventListener("click", showHitokoto);
     document
       .querySelector("#waifu-tool .fa-study-hall")
       .addEventListener("click", () => {
+        buried({
+          body: {
+            click_from: location.href,
+            type: "mascotToC",
+          },
+          event: "mascotHot",
+          eventName: "吉祥物热度",
+        });
         winOpen("https://vip.dingdangcode.com/learning");
       });
     // document
@@ -122,6 +228,14 @@ function loadWidget(config) {
     document
       .querySelector("#waifu-tool .fa-times")
       .addEventListener("click", () => {
+        buried({
+          body: {
+            click_from: location.href,
+            type: "mascotClose",
+          },
+          event: "mascotHot",
+          eventName: "吉祥物热度",
+        });
         localStorage.setItem("waifu-display", Date.now());
         showMessage("愿你有一天能与重要的人重逢。", 2000, 11);
         document.getElementById("waifu").style.bottom = "-500px";
@@ -138,7 +252,7 @@ function loadWidget(config) {
       showMessage("哈哈，你打开了控制台，是想要看看我的小秘密吗？", 6000, 9);
     };
     window.addEventListener("copy", () => {
-      showMessage("你都复制了些什么呀，转载要记得加上出处哦！", 6000, 9);
+      showMessage("你都复制了些什么呀！", 6000, 9);
     });
     window.addEventListener("visibilitychange", () => {
       if (!document.hidden) showMessage("哇，你终于回来了～", 6000, 9);
@@ -188,12 +302,19 @@ function loadWidget(config) {
   })();
 
   function showHitokoto() {
-    console.log("机器人客服");
+    buried({
+      body: {
+        click_from: location.href,
+        type: "mascotDialogue",
+      },
+      event: "mascotHot",
+      eventName: "吉祥物热度",
+    });
     // 增加 hitokoto.cn 的 API
     fetch("https://v1.hitokoto.cn")
       .then((response) => response.json())
       .then((result) => {
-        const text = `这句一言来自 <span>「${result.from}」</span>，是 <span>${result.creator}</span> 在 hitokoto.cn 投稿的。`;
+        const text = `这句一言来自 <span>「${result.from}」</span>`;
         showMessage(result.hitokoto, 6000, 9);
         setTimeout(() => {
           showMessage(text, 4000, 9);
@@ -233,11 +354,9 @@ function loadWidget(config) {
     }
     console.log(modelId, modelTexturesId);
     loadModel(modelId, modelTexturesId);
-    console.log(2222, waifuPath);
     fetch(waifuPath)
       .then((response) => response.json())
       .then((result) => {
-        console.log("mouseover---result:", result, waifuPath);
         window.addEventListener("mouseover", (event) => {
           for (let { selector, text } of result.mouseover) {
             if (!event.target.matches(selector)) continue;
@@ -354,6 +473,14 @@ function loadWidget(config) {
 
   // 美洽客服
   async function loadMeiQiaService() {
+    buried({
+      body: {
+        click_from: location.href,
+        type: "mascotService",
+      },
+      event: "mascotHot",
+      eventName: "吉祥物热度",
+    });
     _MEIQIA("showPanel");
   }
 }
